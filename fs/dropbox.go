@@ -9,8 +9,8 @@ import (
 var Session dropbox.Session
 
 // LoadSession starts a dropbox session and saves into Session
-func LoadSession() (s dropbox.Session) {
-	s = dropbox.Session{
+func LoadSession() {
+	Session = dropbox.Session{
 		AppKey:     Config.AppKey,
 		AppSecret:  Config.AppSecret,
 		AccessType: Config.AccessType,
@@ -19,7 +19,7 @@ func LoadSession() (s dropbox.Session) {
 			Key:    Config.TokenKey,
 		},
 	}
-	return s
+	return
 }
 
 // GetFile returns the contents of 'name' at 'path'
