@@ -1,0 +1,8 @@
+Dropbox-mnt is a work in progress. My end goal is to have an efficient filesystem which uses caching and goroutines to efficiently mount my dropbox account with.
+
+==WORKING FEATURES==
+cd and ls... its a start!
+
+==INSTRUCTION==
+go install
+./dropbox-mnt MOUNTPATH

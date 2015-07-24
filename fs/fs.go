@@ -57,27 +57,32 @@ func MountFs(path string) {
 }
 
 func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
-	attr := &fuse.Attr{}
-	if name != "" {
+	log.Printf("GetAttr with name: %s\n", name)
+	attr := fuse.Attr{}
+	// XXX: handle this error
+	info, _ := DirInfo(name)
+	if info.IsDir {
+		attr.Mode = fuse.S_IFDIR | 0755
+	} else {
 		attr.Mode = fuse.S_IFREG | 0644
 		attr.Size = uint64(len(name))
-	} else {
-		attr.Mode = fuse.S_IFDIR | 0755
 	}
-	return attr, fuse.OK
+	return &attr, fuse.OK
 }
 
 func (me *DropboxFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
-	log.Println("OpenDir")
-	if name == "" {
-		entry := fuse.DirEntry{}
-		file_names, err := FilenamesInDir(name)
-		if err != nil {
-			return nil, fuse.ENOENT
-		}
-		for _, file := range file_names {
-			entry.Name = file
+	log.Printf("OpenDir with path: %s\n", name)
+
+	info, err := DirInfo(name)
+	entry := fuse.DirEntry{}
+
+	if info.IsDir && err == nil {
+		for _, file := range info.Contents {
+			entry.Name = NameFromPath(file.Path)
 			entry.Mode = fuse.S_IFREG
+			if file.IsDir {
+				entry.Mode = fuse.S_IFDIR
+			}
 			c = append(c, entry)
 		}
 		return c, fuse.OK

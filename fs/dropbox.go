@@ -8,7 +8,6 @@ import (
 
 var Session dropbox.Session
 
-// LoadSession starts a dropbox session and saves into Session
 func LoadSession() {
 	Session = dropbox.Session{
 		AppKey:     Config.AppKey,
@@ -22,19 +21,12 @@ func LoadSession() {
 	return
 }
 
-// GetFile returns the contents of 'name' at 'path'
-func GetFile(path string, name string) {
-	return
-}
-
-// _nameFromPath returns the file or directory name at the end of 'path'
-func _nameFromPath(path string) (name string) {
+func NameFromPath(path string) (name string) {
 	parts := strings.Split(path, "/")
 	return parts[len(parts)-1]
 }
 
-// FilenamesInDir returns the filenames in 'path'
-func FilenamesInDir(path string) (filenames []string, err error) {
+func DirInfo(path string) (info dropbox.Metadata, err error) {
 	uri := dropbox.Uri{
 		Root: dropbox.RootDropbox,
 		Path: path,
@@ -42,13 +34,6 @@ func FilenamesInDir(path string) (filenames []string, err error) {
 	params := dropbox.Parameters{List: "True"}
 
 	res, err := dropbox.GetMetadata(Session, uri, &params)
-	if err != nil {
-		return nil, err
-	}
 
-	for i := 0; i < len(res.Contents); i++ {
-		filenames = append(filenames, _nameFromPath(res.Contents[i].Path))
-	}
-
-	return filenames, err
+	return res, err
 }
