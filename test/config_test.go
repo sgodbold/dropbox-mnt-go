@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/sgodbold/dropboxfs/fs"
+	"github.com/sgodbold/dropbox-mnt/fs"
 	"github.com/stretchr/testify/assert"
 )
 
