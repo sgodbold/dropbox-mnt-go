@@ -60,8 +60,9 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 	log.Printf("GetAttr with name: %s\n", name)
 	attr := fuse.Attr{}
 	// XXX: handle this error
-	info, _ := DirInfo(name)
-	if info.IsDir {
+	// data, _ := GetMetadata(name)
+	data, _ := Cache.Get(name)
+	if data.IsDir {
 		attr.Mode = fuse.S_IFDIR | 0755
 	} else {
 		attr.Mode = fuse.S_IFREG | 0644
@@ -73,16 +74,13 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 func (me *DropboxFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
 	log.Printf("OpenDir with path: %s\n", name)
 
-	info, err := DirInfo(name)
+	data, err := Cache.Get(name)
+	// data, err := GetMetadata(name)
 	entry := fuse.DirEntry{}
 
-	if info.IsDir && err == nil {
-		for _, file := range info.Contents {
-			entry.Name = NameFromPath(file.Path)
-			entry.Mode = fuse.S_IFREG
-			if file.IsDir {
-				entry.Mode = fuse.S_IFDIR
-			}
+	if data.IsDir && err == nil {
+		for _, path := range data.Contents {
+			entry.Name = NameFromPath(path)
 			c = append(c, entry)
 		}
 		return c, fuse.OK

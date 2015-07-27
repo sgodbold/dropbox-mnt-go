@@ -12,5 +12,6 @@ func main() {
 	if len(flag.Args()) < 1 {
 		log.Fatal("Usage:\n dropboxfs MOUNTPOINT")
 	}
+	fs.CacheInit()
 	fs.MountFs(flag.Arg(0))
 }
