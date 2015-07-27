@@ -57,10 +57,9 @@ func MountFs(path string) {
 }
 
 func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
-	log.Printf("GetAttr with name: %s\n", name)
+	log.Printf("GetAttr: '%s'\n", name)
 	attr := fuse.Attr{}
 	// XXX: handle this error
-	// data, _ := GetMetadata(name)
 	data, _ := Cache.Get(name)
 	if data.IsDir {
 		attr.Mode = fuse.S_IFDIR | 0755
@@ -72,10 +71,9 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 }
 
 func (me *DropboxFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
-	log.Printf("OpenDir with path: %s\n", name)
+	log.Printf("OpenDir: '%s'\n", name)
 
 	data, err := Cache.Get(name)
-	// data, err := GetMetadata(name)
 	entry := fuse.DirEntry{}
 
 	if data.IsDir && err == nil {
@@ -86,4 +84,14 @@ func (me *DropboxFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEn
 		return c, fuse.OK
 	}
 	return nil, fuse.ENOENT
+}
+
+func (me *DropboxFs) Open(name string, flags uint32, context *fuse.Context) (file nodefs.File, code fuse.Status) {
+	log.Printf("Open: '%s'\n", name)
+	if flags&fuse.O_ANYWRITE != 0 {
+		return nil, fuse.EPERM
+	}
+	// XXX: errors!
+	res, _ := GetFile(name)
+	return nodefs.NewDataFile(res), fuse.OK
 }

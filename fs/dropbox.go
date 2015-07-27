@@ -30,16 +30,30 @@ func LoadSession() {
 	return
 }
 
+func MakeURI(path string) dropbox.Uri {
+	return dropbox.Uri{
+		Root: dropbox.RootDropbox,
+		Path: path,
+	}
+}
+
 func NameFromPath(path string) (name string) {
 	parts := strings.Split(path, "/")
 	return parts[len(parts)-1]
 }
 
-func GetMetadata(path string) (data Metadata, err error) {
-	uri := dropbox.Uri{
-		Root: dropbox.RootDropbox,
-		Path: path,
+func GetFile(path string) (file []byte, err error) {
+	uri := MakeURI(path)
+	params := dropbox.Parameters{}
+	res, _, err := dropbox.GetFile(Session, uri, &params)
+	if err != nil {
+		return nil, err
 	}
+	return res, err
+}
+
+func GetMetadata(path string) (data Metadata, err error) {
+	uri := MakeURI(path)
 	params := dropbox.Parameters{List: "True"}
 	res, err := dropbox.GetMetadata(Session, uri, &params)
 	if err != nil {
