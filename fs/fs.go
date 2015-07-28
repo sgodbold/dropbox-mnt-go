@@ -48,6 +48,7 @@ func MountFs(path string) {
 		log.Fatalf("Config fail: %v\n", err)
 	}
 	LoadSession()
+	CacheInit()
 	nfs := pathfs.NewPathNodeFs(&DropboxFs{FileSystem: pathfs.NewDefaultFileSystem()}, nil)
 	server, _, err := nodefs.MountRoot(path, nfs.Root(), nil)
 	if err != nil {
@@ -60,7 +61,7 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 	log.Printf("GetAttr: '%s'\n", name)
 	attr := fuse.Attr{}
 	// XXX: handle this error
-	data, _ := Cache.Get(name)
+	data, _ := Cache.Metadata.Get(name)
 	if data.IsDir {
 		attr.Mode = fuse.S_IFDIR | 0755
 	} else {
@@ -73,7 +74,7 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 func (me *DropboxFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry, code fuse.Status) {
 	log.Printf("OpenDir: '%s'\n", name)
 
-	data, err := Cache.Get(name)
+	data, err := Cache.Metadata.Get(name)
 	entry := fuse.DirEntry{}
 
 	if data.IsDir && err == nil {

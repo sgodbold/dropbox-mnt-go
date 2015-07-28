@@ -43,20 +43,20 @@ func TestMain(m *testing.M) {
 func TestCacheInit(t *testing.T) {
 	fs.CacheInit()
 	metadata := fs.Metadata{Path: "/hello/world"}
-	fs.Cache.Data["hello"] = metadata
-	assert.Exactly(t, metadata, fs.Cache.Data["hello"])
+	fs.Cache.Metadata.Data["hello"] = metadata
+	assert.Exactly(t, metadata, fs.Cache.Metadata.Data["hello"])
 }
 
-func TestGetFile(t *testing.T) {
+func TestMetadataGet(t *testing.T) {
 	assert := assert.New(t)
 	fs.CacheInit()
 
 	// Check that cache is currently empty
-	assert.Exactly(fs.Metadata{}, fs.Cache.Data[upload_path])
+	assert.Exactly(fs.Metadata{}, fs.Cache.Metadata.Data[upload_path])
 
-	metadata, err := fs.Cache.Get(upload_path)
+	metadata, err := fs.Cache.Metadata.Get(upload_path)
 
 	assert.NoError(err)
 	assert.NotEmpty(metadata)
-	assert.NotEmpty(fs.Cache.Data[upload_path])
+	assert.NotEmpty(fs.Cache.Metadata.Data[upload_path])
 }
