@@ -4,7 +4,6 @@ package fs
 
 import ()
 
-// var Cache MetadataCache
 var Cache AllCache
 
 type AllCache struct {
