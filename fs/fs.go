@@ -1,9 +1,7 @@
 package fs
 
 import (
-	"encoding/json"
 	"log"
-	"os"
 	"time"
 
 	"github.com/hanwen/go-fuse/fuse"
@@ -11,43 +9,12 @@ import (
 	"github.com/hanwen/go-fuse/fuse/pathfs"
 )
 
-var Config Configuration
-
 type DropboxFs struct {
 	pathfs.FileSystem
 }
 
-type Configuration struct {
-	AppKey      string
-	AppSecret   string
-	AccessType  string
-	TokenSecret string
-	TokenKey    string
-}
-
-// LoadConfig loads 'filename' into a global Configuration struct.
-func LoadConfig(filename string) (err error) {
-	// Clear any current values
-	Config = Configuration{}
-
-	file, err := os.Open(filename)
-	if err != nil {
-		return err
-	}
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&Config)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// MountFs mounts the filesystem at 'path'. Loads config and starts dropbox session.
+// MountFs mounts the filesystem at 'path'
 func MountFs(path string) {
-	err := LoadConfig("config.json")
-	if err != nil {
-		log.Fatalf("Config fail: %v\n", err)
-	}
 	LoadSession()
 	CacheInit()
 	nfs := pathfs.NewPathNodeFs(&DropboxFs{FileSystem: pathfs.NewDefaultFileSystem()}, nil)
