@@ -15,7 +15,7 @@ var upload_path = string("/testing/hello_world.txt")
 var uri = dropbox.Uri{dropbox.RootDropbox, upload_path}
 
 func setup() {
-	fs.LoadConfig("../config.json")
+	fs.LoadConfig()
 	fs.LoadSession()
 
 	// Upload test file
