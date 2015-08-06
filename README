@@ -1,8 +1,15 @@
 Dropbox-mnt is a work in progress. My end goal is to have an efficient filesystem which uses caching and goroutines to mount my dropbox account.
 
 ==WORKING FEATURES==
-cd and ls... its a start!
+config generation
+cd and ls... woooo!
 
 ==INSTRUCTION==
+go get github.com/hanwen/go-fuse/fuse
+go get github.com/scottferg/Dropbox-Go/dropbox
 go install
 ./dropbox-mnt MOUNTPATH
+
+==TESTING==
+copy your config to test/
+run 'go test' inside of test/
