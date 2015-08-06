@@ -26,7 +26,3 @@ func (c *MetadataCache) Get(path string) (data Metadata, err error) {
 	}
 	return c.Data[path], err
 }
-
-func CacheInit() {
-	Cache.Metadata.Data = make(map[string]Metadata)
-}

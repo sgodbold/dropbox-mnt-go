@@ -17,19 +17,6 @@ type Metadata struct {
 	Contents []string // list of paths
 }
 
-func LoadSession() {
-	Session = dropbox.Session{
-		AppKey:     Config.AppKey,
-		AppSecret:  Config.AppSecret,
-		AccessType: Config.AccessType,
-		Token: dropbox.AccessToken{
-			Secret: Config.TokenSecret,
-			Key:    Config.TokenKey,
-		},
-	}
-	return
-}
-
 func MakeURI(path string) dropbox.Uri {
 	return dropbox.Uri{
 		Root: dropbox.RootDropbox,

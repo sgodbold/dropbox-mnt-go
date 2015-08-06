@@ -13,18 +13,6 @@ type DropboxFs struct {
 	pathfs.FileSystem
 }
 
-// MountFs mounts the filesystem at 'path'
-func MountFs(path string) {
-	LoadSession()
-	CacheInit()
-	nfs := pathfs.NewPathNodeFs(&DropboxFs{FileSystem: pathfs.NewDefaultFileSystem()}, nil)
-	server, _, err := nodefs.MountRoot(path, nfs.Root(), nil)
-	if err != nil {
-		log.Fatalf("Mount fail: %v\n", err)
-	}
-	server.Serve()
-}
-
 func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
 	log.Printf("GetAttr: '%s'\n", name)
 	attr := fuse.Attr{}
