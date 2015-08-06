@@ -6,12 +6,7 @@ import (
 
 	"github.com/hanwen/go-fuse/fuse"
 	"github.com/hanwen/go-fuse/fuse/nodefs"
-	"github.com/hanwen/go-fuse/fuse/pathfs"
 )
-
-type DropboxFs struct {
-	pathfs.FileSystem
-}
 
 func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fuse.Status) {
 	log.Printf("GetAttr: '%s'\n", name)

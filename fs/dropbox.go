@@ -6,17 +6,6 @@ import (
 	"github.com/scottferg/Dropbox-Go/dropbox"
 )
 
-var Session dropbox.Session
-
-type Metadata struct {
-	Hash     string
-	Bytes    int
-	Modified string
-	Path     string
-	IsDir    bool
-	Contents []string // list of paths
-}
-
 func MakeURI(path string) dropbox.Uri {
 	return dropbox.Uri{
 		Root: dropbox.RootDropbox,
