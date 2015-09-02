@@ -15,6 +15,7 @@ type Configuration struct {
 	AccessType  string
 	TokenSecret string
 	TokenKey    string
+	DropBoxMnt  string
 }
 
 type DropboxFs struct {

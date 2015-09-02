@@ -42,6 +42,7 @@ func InitConfig(file *os.File) (err error) {
 	atoken, _ := s.ObtainAccessToken()
 	Config.TokenKey = atoken.Key
 	Config.TokenSecret = atoken.Secret
+	Config.DropBoxMnt = "/"
 
 	// Write conf back to the config file.
 	config_json, err := json.MarshalIndent(&Config, "", "    ")
