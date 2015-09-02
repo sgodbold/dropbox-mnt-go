@@ -22,19 +22,22 @@ func (me *DropboxFs) GetAttr(name string, context *fuse.Context) (*fuse.Attr, fu
 	return &attr, fuse.OK
 }
 
+// unsupported
 func (me *DropboxFs) Chmod(name string, mode uint32, context *fuse.Context) (code fuse.Status) {
 	log.Printf("Chmod: '%s'\n", name)
-	return
+	return fuse.OK
 }
 
+// unsupported
 func (me *DropboxFs) Chown(name string, uid uint32, gid uint32, context *fuse.Context) (code fuse.Status) {
 	log.Printf("Chown: '%s'\n", name)
-	return
+	return fuse.OK
 }
 
+// unsupported
 func (me *DropboxFs) Utimens(name string, Atime *time.Time, Mtime *time.Time, context *fuse.Context) (code fuse.Status) {
 	log.Printf("Utimens: '%s'\n", name)
-	return
+	return fuse.OK
 }
 
 func (me *DropboxFs) Truncate(name string, size uint64, context *fuse.Context) (code fuse.Status) {
@@ -42,9 +45,10 @@ func (me *DropboxFs) Truncate(name string, size uint64, context *fuse.Context) (
 	return
 }
 
+// unsupported
 func (me *DropboxFs) Access(name string, mode uint32, context *fuse.Context) (code fuse.Status) {
 	log.Printf("Access: '%s'\n", name)
-	return
+	return fuse.OK
 }
 
 func (me *DropboxFs) Link(oldName string, newName string, context *fuse.Context) (code fuse.Status) {
